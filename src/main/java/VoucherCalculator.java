@@ -5,9 +5,7 @@ public class VoucherCalculator {
      * Lỗ hổng: Không kiểm tra nếu voucherValue lớn hơn tổng (cartTotal + shippingFee)
      */
     public double calculateFinalPrice(double cartTotal, double shippingFee, double voucherValue) {
-        
-        double finalPrice = cartTotal + shippingFee - voucherValue;
-        
-        return finalPrice;
-    }
+    double finalPrice = cartTotal + shippingFee - voucherValue;
+    // Rào chắn bảo vệ giá trị
+    return Math.max(0, finalPrice);
 }

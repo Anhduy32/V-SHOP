@@ -2,10 +2,9 @@ name: V-Shop Voucher AI Build Management
 
 on:
   push:
-    # Thêm cả master và main để chắc chắn nhánh nào cũng chạy
-    branches: [ "main", "master", "develop" ]
-    paths:
-      - 'src/main/java/**'
+    branches: [ "main", "master" ]
+  # ĐÂY LÀ DÒNG QUAN TRỌNG NHẤT ĐỂ TẠO NÚT BẤM CHẠY THỦ CÔNG
+  workflow_dispatch: 
 
 jobs:
   build-and-test:
@@ -21,15 +20,14 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # LỚP BẢO VỆ 1: QUÉT TỪ KHÓA CẤM (ĐỂ RA MÀU ĐỎ)
+      # LỚP BẢO VỆ: ĐỂ RA MÀU ĐỎ 
       - name: Layer 1 - Quality Guard
         run: |
-          echo "🔍 Đang quét lỗi trong src/main/java..."
-          if grep -r "TODO_FIX_VOUCHER" src/main/java; then
-            echo "❌ LỖI NGHIÊM TRỌNG: Phát hiện mã chưa hoàn thiện!"
+          echo "🔍 Đang quét mã nguồn V-Shop..."
+          if grep -r "TODO_FIX_VOUCHER" .; then
+            echo "❌ LỖI: Phát hiện từ khóa cấm! Dừng pipeline ngay."
             exit 1
           fi
 
-      # BƯỚC BUILD (Trỏ đúng vào file pom.xml nằm trong src/main/java)
       - name: 3. Chạy Maven Build
         run: mvn -f src/main/java/pom.xml clean package -DskipTests
