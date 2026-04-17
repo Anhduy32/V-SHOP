@@ -20,11 +20,12 @@ jobs:
           java-version: '17'
           distribution: 'temurin'
 
-      # LỚP BẢO VỆ: ĐỂ RA MÀU ĐỎ 
+    # LỚP BẢO VỆ: ĐỂ RA MÀU ĐỎ 
       - name: Layer 1 - Quality Guard
         run: |
           echo "🔍 Đang quét mã nguồn V-Shop..."
-          if grep -r "TODO_FIX_VOUCHER" .; then
+          # Chỉ quét trong thư mục src/main/java
+          if grep -r "TODO_FIX_VOUCHER" src/main/java; then
             echo "❌ LỖI: Phát hiện từ khóa cấm! Dừng pipeline ngay."
             exit 1
           fi
